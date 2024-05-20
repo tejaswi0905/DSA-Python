@@ -1,0 +1,33 @@
+{
+  "folders": [
+	{
+		"name": "DSA-Python",
+		"path": "../../DSA-Python"
+	},
+	{
+		"name": "BinarySearch",
+		"path": "../BinarySearch"
+	},
+	{
+		"name": "GraphsNoobToProVideosCode",
+		"path": "../GraphsNoobToProVideosCode"
+	},
+	{
+		"name": "Greedy",
+		"path": "../Greedy"
+	},
+	{
+		"name": "Heaps",
+		"path": "../Heaps"
+	},
+	{
+		"name": "Lcm, Gcd and primes",
+		"path": "../Lcm, Gcd and primes"
+	},
+	{
+		"name": "Sorting",
+		"path": "."
+	}
+],
+  "settings": {}
+}
