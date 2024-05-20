@@ -1,2 +1,1 @@
-def foo(string):
-    print(string)
+print("what are you doing")
