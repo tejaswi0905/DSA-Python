@@ -1,1 +1,2 @@
-print("Here I am doing prime nubmer stuff")
+def foo(string):
+    print(string)
