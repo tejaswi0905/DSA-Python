@@ -1,0 +1,10 @@
+to commit change, 
+1-> to check the current status git status
+2-> we need to add the changes git add .
+3-> to commit the changes git commit -m "message"
+4-> to push the chages, git push -u origin main 
+
+
+to merge the changes done by the other user
+1-> fetch the changes git fetch origin 
+2-> merge the changes git merge origin/main
