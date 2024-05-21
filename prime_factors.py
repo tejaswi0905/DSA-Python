@@ -18,8 +18,3 @@ def spf(n):
 spf_array = spf(50)
 for i in range(len(spf_array)):
     print(i, spf_array[i])
-
-# First thing is to check status , git status
-# add the changes git add .
-# commit the changes git commit -m "Type you message here"
-# push the changes, git push -u origin branch_name
