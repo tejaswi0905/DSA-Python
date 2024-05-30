@@ -1,0 +1,72 @@
+#leetcode 925 long pressed problem
+def isLongPressedName(self, name: str, typed: str) -> bool:
+        p1 = 0
+        p2 = 1
+        x = 0
+        count = 0
+        cond = False
+        if name[-1]!=typed[-1]:
+            return False
+        while p2<len(typed):
+            if p2!=len(typed)-1:
+                while typed[p2] == typed[p1]:
+                    p2+=1
+                    if p2==len(typed):
+                        break
+                p2-=1
+            if x+1<len(name):
+                if typed[p1] == name[x] and name[x+1]!=name[x]:
+                    cond = True
+                    x+=1
+                    if p2+1<len(typed):
+                        p1 = p2+1
+                        p2 = p1
+                    else:
+                        if p2+1==len(typed) and x+1<len(name):
+                            cond = False
+                            break
+                        return (cond)
+                        break
+                elif typed[p1] == name[x] and name[x+1]==name[x]:
+                    if p2!=p1 and typed[p2]==name[x+1]:
+                        if p2!=p1 and typed[p2]==name[x+1]:
+                            while name[x] == name[x+1]:
+                                x+=1
+                                count+=1
+                                if x==len(name)-1:
+                                    break
+                            count+=1
+                            x+=1
+                            if count<=p2-p1+1:
+                                cond = True
+                                count = 0
+                            else:
+                                cond = False
+                                break
+                            if x>=len(name):
+                                break
+                            if p2+1<len(typed):
+                                p1 = p2+1
+                                p2 = p1
+                            else:
+                                return (cond)
+                                break
+                    else:
+                        cond = False
+                        break
+                else:
+                    cond = False
+                    break
+            else:
+                if x<len(name):
+                    if name[x]==typed[p2]:
+                        cond = True
+                        p2+=1
+                        x+=1
+                    else:
+                        cond = False
+                        x+=1
+                else:
+                    cond = False
+                    break
+        return (cond)
