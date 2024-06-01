@@ -1,6 +1,5 @@
 import math
 
-
 def primes(n):
     primes_array = [True] * (n + 1)
     primes_array[0], primes_array[1] = False, False
