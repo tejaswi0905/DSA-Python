@@ -70,3 +70,4 @@ def isLongPressedName(self, name: str, typed: str) -> bool:
                     cond = False
                     break
         return (cond)
+print(5//2)
