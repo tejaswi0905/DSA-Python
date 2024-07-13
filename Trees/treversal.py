@@ -48,9 +48,9 @@ def treversal_dfs(root):
 
 
 '''
-import deque, we use deque for this. from collections import deque
+import deque, we use deque for this. from collections import deque.
 
-append root to the deque.
+append root to the deque. we use append to append right to deque.
 run a loop as long as deque is non-empty. The way to do that is while q:
  -> pop element from the left
  -> process that node according to the problem.
