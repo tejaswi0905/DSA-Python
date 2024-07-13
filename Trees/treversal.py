@@ -30,6 +30,7 @@ dfs(node):
        -> You get two values from left call and right call.
        -> use those values to compute the current answer for the node
     // Return the answer for this node.
++
 '''
 
 def treversal_dfs(root):
@@ -45,18 +46,6 @@ def treversal_dfs(root):
         current_size = left_sub_tree_size + right_sub_tree_size + 1
         return current_size
     return dfs(root)
-
-
-'''
-import deque, we use deque for this. from collections import deque
-
-append root to the deque.
-run a loop as long as deque is non-empty. The way to do that is while q:
- -> pop element from the left
- -> process that node according to the problem.
- -> append the left and right children of the node to the deque in the right.
-at the end retrun the answer.
-'''
 
 from collections import deque
 
