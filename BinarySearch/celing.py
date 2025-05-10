@@ -98,6 +98,6 @@ def lower_bound(arr, k):
         return l
     return -1
 
-print(lower_bound([1,2,3,4,4,5,6,7], 0))
+print(lower_bound([1,2,3,4,4,5,6,7], 4))
 
 

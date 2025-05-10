@@ -23,36 +23,7 @@ def solve_rec_form1(n, A, B, C):
         dp[level][last] = answer
         return answer
     answer = rec(0, -1)
-    print(dp)
     return answer
-
-def solve_iter_form1(n, A, B, C):
-    dp = [[0] * 3 for i in range(n)]
-    
-    for i in range(3):
-        if i == 0:
-            dp[n - 1][i] = A[n - 1]
-        if i == 1:
-            dp[n - 1][i] = B[n - 1]
-        if i == 2:
-            dp[n - 1][i] = C[n - 1]
-    
-    for level in range(n-2, -1, -1):
-        for task in range(3):
-            answer = 0
-            for j in range(3):
-                if j == task:
-                    continue
-                if j == 0:
-                    answer = max(answer, dp[level + 1][0] + A[level])
-                if j == 1:
-                    answer = max(answer, dp[level + 1][1] + B[level])
-                if j == 2:
-                    answer = max(answer, dp[level + 1][2] + C[level])
-            dp[level][task] = answer
-    print(dp[0])
-
-
 
 
 def solve_rec_form2(n, A, B, C):

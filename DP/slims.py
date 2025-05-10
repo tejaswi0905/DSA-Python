@@ -14,7 +14,7 @@ def slims(arr):
         answer = float("inf")
 
         for mid in range(l + 1, r):
-            answer = min(answer, rec(l, mid) + rec(mid + 1, r))
+            answer = min(answer, rec(l, mid) + rec(mid, r))
         dp[l][r] = answer
         return answer
     answer = rec(0, n - 1)
