@@ -95,3 +95,4 @@ def verticalorderTraversal(root):
 
 print(verticalorderTraversal(root))
 
+# Todo treverals using loops.
