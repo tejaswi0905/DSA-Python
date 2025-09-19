@@ -47,4 +47,3 @@ def main():
         comp_size = rank[p]
         print(comp_size, end = ' ')
 main()
-

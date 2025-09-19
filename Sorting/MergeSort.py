@@ -63,9 +63,9 @@ def merge_in_array(arr, l, y, r):
     return arr
 
 arr = [8, 1, 3, 6, 11, 2, 4, 9, 7, 6]
-# print(merge_in_array(arr, 2, 5,7))
+#print(merge_in_array(arr, 2, 5,7))
 
-# Now finally mergeSort algorithm which uses the mergeing two sorted parts of the array
+# Now finally mergeSort algorithm which uses the mergeing two sorted parts of the array, now the merge step and the merge_array function should go hand in hand, since we are using l to y - 1, and y to r in the merge_array function, our mid will be y and the merge step will be, merge(l, mid) and merge(mid + 1, r) and the merge_array will be merge_array(arr, l, mid + 1, r)
 
 def merge_sort(arr):
     def merge(arr, l, r):
@@ -81,7 +81,43 @@ def merge_sort(arr):
     return arr
 print(merge_sort(arr))
 
+def count_pairs(arr, l, y, r):
+    answer = 0
+    i = 0
+    j = y
+    while (i < y) and (j <= r):
+        if arr[i] > arr[j]:
+            answer += y - i
+            j += 1
+        else:
+            i += 1
+    return answer
 
+nums = [10, 3, 8, 15, 6, 12, 2, 18, 7, 1]
 
-
-
+def count_of_inversion(arr):
+    def count_pairs(arr, l, y, r):
+        answer = 0
+        i = l
+        j = y
+        while (i < y) and (j <= r):
+            if arr[i] > arr[j]:
+                answer += y - i
+                j += 1
+            else:
+                i += 1
+        return answer
+    def merge(arr, l, r):
+        if (l == r):
+            return 0
+        mid = (l + r) // 2
+        left_count = merge(arr, l, mid)
+        right_count = merge(arr, mid + 1, r)
+        l_and_r = count_pairs(arr, l, mid + 1, r)
+        merge_in_array(arr, l, mid + 1, r)
+        return left_count + right_count + l_and_r
+    l = 0
+    r = len(arr) - 1
+    answer = merge(arr,l, r)
+    return answer
+print(count_of_inversion(nums))

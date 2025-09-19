@@ -8,6 +8,3 @@ def recursive_fn(num):
 
 #num = int(input())
 print(recursive_fn(5))
-
-
-

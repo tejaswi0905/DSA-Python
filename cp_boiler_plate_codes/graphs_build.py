@@ -1,0 +1,45 @@
+# non-weighted graphs
+from collections import defaultdict
+def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
+    g = defaultdict(list)
+    degree = None
+    in_degree = None
+    out_degree = None
+
+    if not is_directed:
+        if need_degree:
+            if zero_to_n:
+                degree = [0] * n
+            else:
+                degree = [0] * (n + 1)
+            for u, v in edges:
+                g[u].append(v)
+                degree[u] += 1
+                g[v].append(u)
+                degree[v] += 1
+        else:
+            for u, v in edges:
+                g[u].append(v)
+                g[v].append(u)
+    
+            
+    
+    else:
+        if need_degree:
+            if zero_to_n:
+                in_degree = [0] * n
+                out_degree = [0] * n
+            
+            else:
+                in_degree = [0] * (n + 1)
+                out_degree = [0] * (n + 1)
+            
+            for u, v in edges:
+                g[u].append(v)
+                in_degree[v] += 1
+                out_degree[u] += 1
+        else:
+            for u, v in edges:
+                g[u].append(v)
+    return (g, degree, in_degree, out_degree)
+

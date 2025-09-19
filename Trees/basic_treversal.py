@@ -50,7 +50,6 @@ def bfs_treversal(root):
         if cur_node.right:
             q.append(cur_node.right)
 
-bfs_treversal(root)
 
 def each_level_array(root):
     q = deque()
@@ -94,8 +93,6 @@ def size_of_tree(node):
     total_size = left_size + right_size + cur_size
     return total_size
     
-        
-print(size_of_tree(root))
 
 def sum_of_all_node(node):
     if (node.left == None and node.right == None):
@@ -124,5 +121,30 @@ def sum_of_tree(node):
     total_sum = cur_val + left_val + right_val
     return total_sum
 
-print(sum_of_all_node(root))
-print(sum_of_tree(root))
+inOrder = [15, 5, 19, 6, 18, 9, 25, 8, 7, 41, 4, 39, 30, 48]
+preOrder = [8, 6, 5, 15, 19, 9, 18, 25, 4, 7, 41, 30, 39, 48]
+
+def build_tree(inOrder, preOrder):
+    inOrder_idx = {val:idx for idx, val in enumerate(inOrder)}
+    preOrder_index = [0]
+    
+    def build(start, end):
+        if start > end:
+            return None
+        
+        rootNode_val = preOrder[preOrder_index[0]]
+        preOrder_index[0] += 1
+
+        rootNode_idx = inOrder_idx[rootNode_val]
+        rootNode = Node(rootNode_val)
+
+        lst = build(start, rootNode_idx - 1)
+        rst = build(rootNode_idx + 1, end)
+        rootNode.left = lst
+        rootNode.right = rst
+        return rootNode
+    start = 0
+    end = len(inOrder) - 1
+    return build(start, end)
+newRoot = build_tree(inOrder, preOrder)
+print(sum(inOrder), sum_of_all_node(newRoot))

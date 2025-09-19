@@ -41,8 +41,7 @@ def bridges_and_articulation_points(edges, n):
             dfs(i, 0)
 
     print(articulation_points)
-    
-    return bridge_edges
+    print(bridge_edges)
 
 print(bridges_and_articulation_points(edges, 9))
 

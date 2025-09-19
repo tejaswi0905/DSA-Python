@@ -26,6 +26,17 @@ node5.left = node9
 node5.right = node10
 node6.right = node11
 
+# root = Node(4)
+# node1 = Node(3)
+# node2 = Node(2)
+# node3 = Node(1)
+# node4 = Node(0)
+
+# root.left = node1
+# node1.left = node2
+# node2.left = node3
+# node3.left = node4
+
 def height_of_tree(node):
     if node is None:
         return 0

@@ -16,10 +16,12 @@ def sub_sets(arr):
         rec(arr, i + 1, curr, call_count)
 
 
-
     rec(arr, 0, curr, call_count)
     print(res)
 
-sub_sets([1, 2, 3])
+
+
+
+
 
         

@@ -1,3 +1,8 @@
+'''
+When it comes to permutations, the order matters, and [1, 2, 3] and [1, 3, 2] are very different, There are two ways we can implement the logic of finding all permutations, and one of them is using the userd[i] = True/False array and the other one is inserting the current element in every possible position. 
+'''
+
+# Here we will take are using the head and tail approach, we will divide the array into head and tail head being ghe first element and tail being the rest of the array. Example arr = [1, 2, 3] now the head is 1 and tail is [2, 3] now all the permutation of [2, 3] are [[2, 3] and [3, 2]] now we insert 1 in all the places of these two permutations, take [2, 3] there are 3 places for us to insert head, [__, 2, __, 3, __], They are before 2, between 2 and 3 and after 3, each of them will give one unique permutation, finally we will get [1, 2, 3], [2, 1, 3], [2, 3, 1]. Similiraly we will get same with [3, 2], [1, 3, 2], [3, 1, 2], [3, 2, 1]. Here is the code:-
 def permutation(arr):
 
     def get_perm(arr):
@@ -19,8 +24,7 @@ def permutation(arr):
         return res
     return get_perm(arr)
 
-# print(permutation([1,2,3,4,5]))
-
+# this is very easy, In the descsion tree every time we have all the 3 elemets to choose from.
 def permutations_with_rep(arr):
 
     res = []
@@ -35,7 +39,37 @@ def permutations_with_rep(arr):
     rec([])
     return rec
 
-print(permutations_with_rep([1,2,3]))
+
+
+
+def permu_with_duplicates(arr, k):
+    res = []
+    arr.sort()
+    used = [False] * len(arr)
+
+    def rec(cur_comb):
+        if len(cur_comb) == k:
+            res.append(cur_comb[:])
+            return 
+        
+        for i in range(len(arr)):
+            # if used[i]:
+            #     continue
+            if i > 0 and arr[i] == arr[i - 1] and used[i - 1] == False:
+                continue
+
+            cur_comb.append(arr[i])
+            used[i] = True
+            rec(cur_comb)
+            cur_comb.pop()
+            used[i] = False
+    rec([])
+    return res
+
+print(permu_with_duplicates([1,1,2], 3))
+# print(permutation([1,2,3,4,5]))
+
+
 
 def other_perm(arr):
     res = []
@@ -58,7 +92,6 @@ def other_perm(arr):
     rec([])
     return res
 
-# print(other_perm([1,2,3]))
 
 '''
 The basic code for generating combinations of size k from an array. All the elements of the array are unique and all the combinations must be unique.
@@ -99,7 +132,7 @@ def comb_with_reps(arr, k):
             cur_comb.pop()
     backtracking(0, [])
     return res
-print(comb('abcd', 3))
+# print(comb('abcd', 3))
 
 
 '''
@@ -129,6 +162,6 @@ def comb_with_duplicates(arr, k):
     backtracking(0, [])
     return res
 
-print(comb_with_duplicates([2, 1, 3, 3, 1, 4], 3))
+# print(comb_with_duplicates([2, 1, 3, 3, 1, 4], 3))
 
                 
