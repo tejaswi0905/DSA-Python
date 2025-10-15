@@ -1,5 +1,30 @@
+'''
+1846E1, this problem is implementation and nothing more. For each k, the minimum number of nodes in the graph are, 1 + k + k^2, and we keep adding k powers to the graph, and k can be form 1 to inf, but the total number of nodes can't be more than 10^6.
+
+'''
+
+
 # non-weighted graphs
-from collections import defaultdict
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+def ainp():
+    return list(map(int, input().split()))
+
+def iinp():
+    return int(input())
+
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -43,32 +68,33 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, arr):
-    answer = []
-    i = 0
-    while i < n:
-        j = i
-        while j < n and arr[j] == 1:
-            j += 1
-        if j == n:
-            return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
-            i = j
-            continue
 
-        if i == j:
-            i += 1
-            continue
-    return answer
+const = 10**6 + 5
+arr = [False] * const
 
+
+def solve():
+    global const
+    k = 2
+    while k < const:
+        total = 1 + k + k * k
+        x = k * k
+        while total < const:
+            arr[total] = True
+            total += x * k
+            x = x * k
+        k += 1
+
+solve()
+
+    
 
 def main():
-    t = int(input())
+    t = iinp()
     for _ in range(t):
-        n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
+        n = iinp()
+        if arr[n]:
+            print("YES")
+        else:
+            print("NO")
 main()

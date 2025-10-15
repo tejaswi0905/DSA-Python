@@ -1,5 +1,17 @@
 # non-weighted graphs
-from collections import defaultdict
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -43,32 +55,25 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, arr):
-    answer = []
+def solve(n, string):
     i = 0
-    while i < n:
-        j = i
-        while j < n and arr[j] == 1:
-            j += 1
-        if j == n:
-            return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
-            i = j
-            continue
-
+    answer = []
+    for j in range(1, len(string)):
         if i == j:
-            i += 1
             continue
-    return answer
+        if string[i] == string[j]:
+            answer.append(string[i])
+            i = j + 1
+            continue
+    return "".join(answer)
+
 
 
 def main():
     t = int(input())
     for _ in range(t):
         n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
+        string = input()
+        # print_adv("The answer is ", solve, n, string)
+        print(solve(n, string))
 main()

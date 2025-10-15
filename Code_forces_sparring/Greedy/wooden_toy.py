@@ -1,5 +1,24 @@
-# non-weighted graphs
-from collections import defaultdict
+# Binary search, and greedy and sorting, the conclusion for the binary search is very intersting.
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+def ainp():
+    return list(map(int, input().split()))
+
+def iinp():
+    return int(input())
+
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -43,32 +62,41 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, arr):
-    answer = []
-    i = 0
-    while i < n:
-        j = i
-        while j < n and arr[j] == 1:
-            j += 1
-        if j == n:
-            return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
-            i = j
-            continue
 
-        if i == j:
-            i += 1
-            continue
-    return answer
+def solve(n, arr):
+    arr = list(sorted(arr))
+    low = 0
+    high = 10**9
+    ans = float("inf")
+
+    def is_possible(x):
+        i = 0
+        for group in range(3):  # at most 3 groups
+            if i >= n:
+                break
+            j = i
+            while j < n and arr[j] - arr[i] <= 2 * x:
+                j += 1
+            i = j
+        return i == n
+
+
+    while (low <= high):
+        mid = (low + high) // 2
+        if is_possible(mid):
+            ans = mid
+            high = mid - 1
+        else:
+            low = mid + 1
+        
+    return ans
 
 
 def main():
-    t = int(input())
+    t = iinp()
     for _ in range(t):
-        n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
+        n = iinp()
+        arr = ainp()
+        print(solve(n, arr))
+
 main()

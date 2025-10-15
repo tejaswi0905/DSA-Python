@@ -1,5 +1,30 @@
+'''
+Now the problems is same as rudalf_snowflake, 
+
+'''
+
+
 # non-weighted graphs
-from collections import defaultdict
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+def ainp():
+    return list(map(int, input().split()))
+
+def iinp():
+    return int(input())
+
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -43,32 +68,39 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, arr):
-    answer = []
-    i = 0
-    while i < n:
-        j = i
-        while j < n and arr[j] == 1:
-            j += 1
-        if j == n:
-            return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
-            i = j
-            continue
 
-        if i == j:
-            i += 1
-            continue
-    return answer
-
-
-def main():
+def solve():
+    import sys
+    input = sys.stdin.readline
     t = int(input())
     for _ in range(t):
         n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
-main()
+        found = False
+
+        for p in range(2, 61):
+            low, high = 2, int(1e18)
+            while low <= high:
+                mid = (low + high) // 2
+
+                total, term = 1, 1
+                overflow = False
+                for _ in range(p):
+                    term *= mid
+                    total += term
+                    if total > n:
+                        overflow = True
+                        break
+
+                if total == n:
+                    found = True
+                    break
+                elif total < n and not overflow:
+                    low = mid + 1
+                else:
+                    high = mid - 1
+
+            if found:
+                break
+
+        print("YES" if found else "NO")
+solve()

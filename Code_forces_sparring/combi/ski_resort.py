@@ -1,5 +1,17 @@
 # non-weighted graphs
-from collections import defaultdict
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -43,32 +55,31 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, arr):
-    answer = []
+
+def solve(n, k, q, temps):
+    answer = 0
     i = 0
     while i < n:
-        j = i
-        while j < n and arr[j] == 1:
-            j += 1
-        if j == n:
-            return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
-            i = j
-            continue
-
-        if i == j:
+        if temps[i] > q:
             i += 1
             continue
+        j = i
+        while j < n and temps[j] <= q:
+            j += 1
+        length = j - i
+        if length >= k:
+            count = (length - k + 1) * (length - k + 2) // 2
+            answer += count
+        i = j
     return answer
+
 
 
 def main():
     t = int(input())
     for _ in range(t):
-        n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
+        n, k, q = list(map(int, input().split()))
+        temps = list(map(int, input().split()))
+        # print_adv("The answer is ", solve, n, k, q, temps)
+        print(solve(n, k, q, temps))
 main()

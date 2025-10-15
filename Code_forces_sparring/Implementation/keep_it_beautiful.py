@@ -1,5 +1,24 @@
 # non-weighted graphs
-from collections import defaultdict
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+def ainp():
+    return list(map(int, input().split()))
+
+def iinp():
+    return int(input())
+
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -43,32 +62,41 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, arr):
-    answer = []
-    i = 0
-    while i < n:
-        j = i
-        while j < n and arr[j] == 1:
-            j += 1
-        if j == n:
-            return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
-            i = j
-            continue
 
-        if i == j:
-            i += 1
+def solve(q, arr):
+    answer = []
+    new_arr = []
+
+    okay = False
+    
+    for ele in arr:
+        if len(answer) == 0:
+            new_arr.append(ele)
+            answer.append("1")
             continue
-    return answer
+        if (ele >= new_arr[-1]) and (not okay):
+            new_arr.append(ele)
+            answer.append("1")
+            continue
+        if (ele <= new_arr[0]) and (not okay):
+            okay = True
+            new_arr.append(ele)
+            answer.append("1")
+            continue
+        if (okay == True and (ele >= new_arr[-1] and ele <= new_arr[0])):
+            new_arr.append(ele)
+            answer.append("1")
+            continue
+        answer.append("0")
+    return "".join(answer)
 
 
 def main():
-    t = int(input())
+    t = iinp()
     for _ in range(t):
-        n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
+        q = iinp()
+        arr = ainp()
+        # print_adv("The answer is ", solve, q, arr)
+        print(solve(q, arr))
+
 main()

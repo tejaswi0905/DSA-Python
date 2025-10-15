@@ -1,5 +1,26 @@
+#1843B, even though the solution is very simple, I did not come up with it, I was thinking some complicated things in my head.
+
 # non-weighted graphs
-from collections import defaultdict
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+def ainp():
+    return list(map(int, input().split()))
+
+def iinp():
+    return int(input())
+
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -44,31 +65,29 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
     return (g, degree, in_degree, out_degree)
 
 def solve(n, arr):
-    answer = []
+    neg_ranges = 0
     i = 0
     while i < n:
-        j = i
-        while j < n and arr[j] == 1:
-            j += 1
-        if j == n:
-            return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
+        if arr[i] < 0:
+            j = i
+            while j < n and arr[j] <= 0:
+                j += 1
+            neg_ranges += 1
             i = j
             continue
+        i += 1
+    sum_ = sum(list(map(abs, arr)))
+    return sum_, neg_ranges
 
-        if i == j:
-            i += 1
-            continue
-    return answer
+        
+        
 
 
 def main():
-    t = int(input())
+    t = iinp()
     for _ in range(t):
-        n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
+        n = iinp()
+        arr = ainp()
+        a1, a2 = solve(n, arr)
+        print(a1, a2)
 main()

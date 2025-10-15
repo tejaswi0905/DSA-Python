@@ -1,5 +1,28 @@
+'''
+1839C, This one is very good. The key idea behid solving this problem is think in opposite. Instead of truning an empty array into B, try to trun the array A into an empty array.
+'''
+
 # non-weighted graphs
-from collections import defaultdict
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+def ainp():
+    return list(map(int, input().split()))
+
+def iinp():
+    return int(input())
+
+
+
 def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
     g = defaultdict(list)
     degree = None
@@ -43,32 +66,31 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, arr):
-    answer = []
+def solve(n, a):
+    ans = []
     i = 0
     while i < n:
         j = i
-        while j < n and arr[j] == 1:
+        while (j < n and a[j] == 1):
             j += 1
         if j == n:
             return []
-        answer.append(j)
-        for k in range(i, j):
-            answer.append(0)
-        if i < j:
-            i = j
-            continue
-
-        if i == j:
-            i += 1
-            continue
-    return answer
-
+        ans.append(j)
+        for _ in range(i, j):
+            ans.append(0)
+        i = j + 1
+    return list(reversed(a))
 
 def main():
-    t = int(input())
+    t = iinp()
     for _ in range(t):
-        n = int(input())
-        a = list(map(int, input().split()))
-        print("The answer is ", solve(n, a))
+        n = iinp()
+        arr = ainp()
+        ans = solve(n, arr)
+        if not ans:
+            print("NO")
+            continue
+        print("YES")
+        print(*ans[:n])
+        
 main()
