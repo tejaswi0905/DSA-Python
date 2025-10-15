@@ -75,11 +75,12 @@ def solve(n, a):
             j += 1
         if j == n:
             return []
-        ans.append(j)
+        ans.append(j - 1)
         for _ in range(i, j):
             ans.append(0)
-        i = j + 1
-    return list(reversed(a))
+        i = j
+    ans.reverse()
+    return ans[:n]
 
 def main():
     t = iinp()
