@@ -1,0 +1,113 @@
+"1846C, this is a classic exchange argument problem, and there is some extra implementation that we should do for this problem"
+
+# non-weighted graphs
+from collections import defaultdict, deque
+import math
+import heapq as hq
+
+from sys import setrecursionlimit
+setrecursionlimit(10**6)
+
+def print_adv(text, func, *args, **kwargs):
+    print(text, end = ' ')
+    result = func(*args, **kwargs)
+    print(result)
+
+def ainp():
+    return list(map(int, input().split()))
+
+def iinp():
+    return int(input())
+
+
+
+def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
+    g = defaultdict(list)
+    degree = None
+    in_degree = None
+    out_degree = None
+
+    if not is_directed:
+        if need_degree:
+            if zero_to_n:
+                degree = [0] * n
+            else:
+                degree = [0] * (n + 1)
+            for u, v in edges:
+                g[u].append(v)
+                degree[u] += 1
+                g[v].append(u)
+                degree[v] += 1
+        else:
+            for u, v in edges:
+                g[u].append(v)
+                g[v].append(u)
+    
+            
+    
+    else:
+        if need_degree:
+            if zero_to_n:
+                in_degree = [0] * n
+                out_degree = [0] * n
+            
+            else:
+                in_degree = [0] * (n + 1)
+                out_degree = [0] * (n + 1)
+            
+            for u, v in edges:
+                g[u].append(v)
+                in_degree[v] += 1
+                out_degree[u] += 1
+        else:
+            for u, v in edges:
+                g[u].append(v)
+    return (g, degree, in_degree, out_degree)
+
+
+def solve(n, m, max_time, times):
+    all = []
+    def get_points_penality(max_time, time):
+        points = 0
+        penaity = 0
+        cur = 0
+        time.sort()
+        for t in time:
+            if cur + t <= max_time:
+                cur += t
+                points -= 1
+                penaity += cur
+            else:
+                break
+        return (points, penaity)
+    rudolfs = get_points_penality(max_time, times[0])
+    all.append(rudolfs)
+    for i in range(1, len(times)):
+        all.append(get_points_penality(max_time, times[i]))
+    
+    def sort_key(x):
+        a = x[0]
+        b = x[1]
+        return (a, b)
+    all.sort(key = sort_key)
+
+    for i, val in enumerate(all):
+        if val == rudolfs:
+            return i + 1
+        
+    
+
+
+
+
+
+def main():
+    t = iinp()
+    for _ in range(t):
+        n, m, max_time = ainp()
+        times = []
+        for _ in range(n):
+            time = ainp()
+            times.append(time)
+        print(solve(n, m, max, times))
+main()

@@ -75,10 +75,10 @@ def solve(n, a):
             j += 1
         if j == n:
             return []
-        ans.append(j - 1)
+        ans.append(j - i)
         for _ in range(i, j):
             ans.append(0)
-        i = j
+        i = j + 1
     ans.reverse()
     return ans[:n]
 

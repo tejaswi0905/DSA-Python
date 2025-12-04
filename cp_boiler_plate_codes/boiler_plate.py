@@ -63,5 +63,9 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
     return (g, degree, in_degree, out_degree)
 
 
+
 def main():
-    pass
+    t = iinp()
+    for _ in range(t):
+
+main()
