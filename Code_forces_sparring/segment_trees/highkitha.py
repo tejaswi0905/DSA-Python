@@ -28,41 +28,41 @@ class SegmentTree:
         self.neutral = neutral
         self.build(arr, 0, 0, self.n - 1)
     
-    def build(self, arr, node, start, end = None):
+    def build(self, arr, node_idx, start, end = None):
         if end is None:
             end = self.n - 1
         if start == end:
-            self.tree[node] = arr[start]
+            self.tree[node_idx] = arr[start]
             return 
         mid = (start + end) // 2
-        self.build(arr, 2*node + 1, start, mid)
-        self.build(arr, 2*node + 2, mid + 1, end)
-        self.tree[node] = self.merge(self.tree[2*node + 1], self.tree[2*node + 2])
+        self.build(arr, 2*node_idx + 1, start, mid)
+        self.build(arr, 2*node_idx + 2, mid + 1, end)
+        self.tree[node_idx] = self.merge(self.tree[2*node_idx + 1], self.tree[2*node_idx + 2])
     
-    def update(self, idx, val, node, start, end = None):
+    def update(self, idx, val, node_idx, start, end = None):
         if end is None:
             end = self.n - 1
         if start == end:
-            self.tree[node] = val
+            self.tree[node_idx] = val
             return
         
         mid = (start + end) // 2
         if idx <= mid:
-            self.update(idx, val, 2*node + 1, start, mid)
+            self.update(idx, val, 2*node_idx + 1, start, mid)
         else:
-            self.update(idx, val, 2 * node + 2, mid + 1, end)
-        self.tree[node] = self.merge(self.tree[2*node + 1], self.tree[2*node + 2])
+            self.update(idx, val, 2 * node_idx + 2, mid + 1, end)
+        self.tree[node_idx] = self.merge(self.tree[2*node_idx + 1], self.tree[2*node_idx + 2])
     
-    def query(self, left, right, node, start, end = None):
+    def query(self, left, right, node_idx, start, end = None):
         if end is None:
             end = self.n - 1
         if left > end or right < start:
             return self.neutral
         if left <= start and right >= end:
-            return self.tree[node]
+            return self.tree[node_idx]
         mid = (start + end) // 2
-        left_val = self.query(left, right, 2*node + 1, start, mid)
-        right_val = self.query(left, right, 2*node + 2, mid + 1, end)
+        left_val = self.query(left, right, 2*node_idx + 1, start, mid)
+        right_val = self.query(left, right, 2*node_idx + 2, mid + 1, end)
         return self.merge(left_val, right_val)
 
 

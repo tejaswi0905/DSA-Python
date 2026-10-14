@@ -1,4 +1,3 @@
-"This problem is 1845D, I did not solve this problem on my own"
 # non-weighted graphs
 from collections import defaultdict, deque
 import math
@@ -63,34 +62,33 @@ def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False,
                 g[u].append(v)
     return (g, degree, in_degree, out_degree)
 
-def solve(n, a):
-    # Step 1: Prefix sums
+def solve(n, arr):
     p = [0] * (n + 1)
     for i in range(n):
-        p[i + 1] = p[i] + a[i]
+        p[i + 1] = p[i] + arr[i]
+    
+    mx = 0
+    answer = 0
 
-
-    # Step 3: Traverse backwards to find suffix max gain
-    mx = 0  # stores maximum suffix gain
-    res = 0  # stores the corresponding k
-    ans = float("-inf")
     for i in range(n, 0, -1):
-        if p[i] > p[i - 1]:
+        if p[i] > p[i - 1]: # this means raise, we are looking for dip.
             continue
-
         k = p[i - 1]
-        mx = max(mx, p[n] - p[i])  # suffix gain
-        if mx + k > ans:
-            ans = mx + k
-            res = k
+        mx = max(mx, p[n] - p[i])
+        cur = k + mx
+        if cur > answer:
+            answer = cur
+    return answer
 
-    return res 
 
 
 def main():
     t = iinp()
     for _ in range(t):
         n = iinp()
-        a = ainp()
-        print(solve(n, a))
+        arr = ainp()
+        ans = solve(n, arr)
+        print(ans)
+
+
 main()

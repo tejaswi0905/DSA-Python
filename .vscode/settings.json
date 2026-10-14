@@ -1,4 +1,5 @@
 {
-    "editor.fontSize": 16,
-    "code-runner.customCommand": "echo hello"
+  "editor.fontSize": 16,
+  "code-runner.customCommand": "echo hello",
+  "python.REPL.enableREPLSmartSend": false
 }

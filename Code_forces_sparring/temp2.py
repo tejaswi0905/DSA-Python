@@ -1,17 +1,20 @@
-# non-weighted graphs
-from collections import defaultdict, deque
+from collections import deque
 import math
 import heapq as hq
+import threading
+import sys
+input = sys.stdin.readline
 
-from sys import setrecursionlimit
-setrecursionlimit(10**6)
+sys.setrecursionlimit(10**7)
+
+
 
 def print_adv(text, func, *args, **kwargs):
     print(text, end = ' ')
     result = func(*args, **kwargs)
     print(result)
 
-def ainp():
+def ainp():  
     return list(map(int, input().split()))
 
 def iinp():
@@ -19,95 +22,151 @@ def iinp():
 
 
 
-def build_graph_non_weighted(n, edges, is_directed = False, need_degree = False, zero_to_n = False):
-    g = defaultdict(list)
-    degree = None
-    in_degree = None
-    out_degree = None
-
-    if not is_directed:
-        if need_degree:
-            if zero_to_n:
-                degree = [0] * n
-            else:
-                degree = [0] * (n + 1)
-            for u, v in edges:
-                g[u].append(v)
-                degree[u] += 1
-                g[v].append(u)
-                degree[v] += 1
+def get_bits(num):
+    ans = []
+    for i in range(30):
+        if (1<<i & num) == 0:
+            ans.append(0)
         else:
-            for u, v in edges:
-                g[u].append(v)
-                g[v].append(u)
-    
-            
-    
-    else:
-        if need_degree:
-            if zero_to_n:
-                in_degree = [0] * n
-                out_degree = [0] * n
-            
-            else:
-                in_degree = [0] * (n + 1)
-                out_degree = [0] * (n + 1)
-            
-            for u, v in edges:
-                g[u].append(v)
-                in_degree[v] += 1
-                out_degree[u] += 1
-        else:
-            for u, v in edges:
-                g[u].append(v)
-    return (g, degree, in_degree, out_degree)
-
-
-
-import sys
-from math import inf
-input = sys.stdin.readline
-
-def baseline(d, x):
-    # x is a list of positions with sentinels already included
-    # computes: sum ((x[i] - x[i-1] - 1) // d) + (len(x) - 2)
-    ans = 0
-    for i in range(1, len(x)):
-        ans += (x[i] - x[i-1] - 1) // d
-    ans += len(x) - 2
+            ans.append(1)
     return ans
 
-def solve_case():
-    n, m, d = map(int, input().split())
-    r = list(map(int, input().split()))
+def get_int(arr):
+    ans = 0
+    for i in range(len(arr)):
+        ans += (2**i) * arr[i]
+    return ans
 
-    # Insert editorial sentinels: 1-d at front, n+1 at end
-    r.insert(0, 1 - d)
-    r.append(n + 1)
+def get_highest_2_power_less_than_k(k):
+    num = None
+    i = 0
+    while (1 << i) <= k:
+        num = 1 << i
+        i += 1
+    return num
 
-    bestD = 10**18   # minimal D found (we want min)
-    res_count = 0
+def get_bit_count(num):
+    cnt = 0
+    while num > 0:
+        num = num >> 1
+        cnt += 1
+    return cnt
 
-    for i in range(1, m + 1):
-        A = r[i] - r[i-1] - 1
-        B = r[i+1] - r[i] - 1
-        C = r[i+1] - r[i-1] - 1
-        D = C // d - (A // d + B // d)
+def is_ith_bit_set(num, i):
+    return ((1 << i) & num) != 0
 
-        if D < bestD:
-            bestD = D
-            res_count = 1
-        elif D == bestD:
-            res_count += 1
+def get_bit_freq(nums, k):
+    bf = [0] * k
+    for num in nums:
+        i = 0
+        while i < k:
+            if ((num >> i) & 1) == 1:
+                bf[i] += 1
+            i += 1
+    return bf
 
-    total = bestD + baseline(d, r) - 1
-    print(total, res_count)
+def xor_upto_n(n):
+    if n % 4 == 0:
+        return n
+    if n % 4 == 1:
+        return 1
+    if n % 4 == 2:
+        return n + 1
+    if n % 4 == 3:
+        return 0
+    
+def get_xor_of_arr(arr):
+    ans = 0
+    for num in arr:
+        ans = ans ^ num
+    return ans
+
+def v2(num):
+    i = 0
+    while ((num >> i) & 1) == 0:
+        i += 1
+    return i
+
+
+
+def solve(n, edges, pairs):
+    g = {i:[] for i in range(n + 1)}
+    for u,v in edges:
+        g[u].append(v)
+        g[v].append(u)
+
+    depth = [0]*n
+
+    LOG = 20
+    up = [[-1]*LOG for _ in range(n + 1)]
+
+    def dfs(node, par, cur_depth):
+        depth[node] = cur_depth
+        for ch in g[node]:
+            if ch == par:
+                continue
+            up[ch][0] = node
+            dfs(ch, node, cur_depth + 1)
+
+    dfs(1, -1, 0)
+
+    for k in range(LOG - 1, -1, -1):
+        for u in range(1, n + 1):
+            ansc = up[u][k - 1]
+            if ansc != -1:
+                up[u][k] = up[ansc][k - 1]
+
+    def get_kth_parent(u, k):
+        if k == 0 or u == -1:
+            return u 
+
+        for jump in range(LOG - 1, -1, -1):
+            if (k >= (1 << jump)) and (u != -1):
+                u = up[u][jump]
+                k -= (1 << jump)
+        return u 
+
+    def lca(u, v):
+        du, dv = depth[u], depth[v]
+        if du > dv:
+            u = get_kth_parent(u, du - dv)
+        if dv > du:
+            v = get_kth_parent(v, dv - du)
+        if u == v:
+            return u 
+
+        for jump in range(LOG - 1, -1, -1):
+            if up[u][jump] != up[v][jump]:
+                u = up[u][jump]
+                v = up[v][jump]
+        return up[u][0]
+
+
+    def get_dist(u, v):
+        l = lca(u, v)
+        du = depth[u]
+        dv = depth[v]
+        dl = depth[l]
+        return (du + dv - 2*dl)
+
+    
+
+    
 
 
 def main():
-    t = int(input().strip())
-    for _ in range(t):
-        solve_case()
+    n, k = ainp()
+    pairs = ainp()
+    edges = []
+    for _ in range(n - 1):
+        edge = ainp()
+        edges.append(edge)
 
+    ans = solve(n, edges, pairs)
+    print(ans)
+    
+    
+        
+    
 if __name__ == "__main__":
     main()

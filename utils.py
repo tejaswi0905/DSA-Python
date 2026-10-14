@@ -1,39 +1,51 @@
-import math
-def but_stops(nums):
-    total = sum(nums)
-    min_num = max(nums)
-
-    def find_factors(num, min_num):
-        factors = []
-        for i in range(1, int(math.sqrt(num)) + 1):
-            if num % i == 0:
-                if (i >= min_num):
-                    factors.append(i)
-                if (num // i >= min_num):
-                    factors.append(num//i)
-        return sorted(factors)
-    factors = find_factors(total, min_num)
-
-    def canDivideIntoGroups(nums, k):
-        cur_sum = 0
-        for num in nums:
-            cur_sum += num
-            if cur_sum == k:
-                cur_sum = 0
-            if cur_sum > k:
-                return False
-        return cur_sum == 0
+def find_peak(nums):
+    l, r = 0, len(nums) - 2
     
-    answer = []
-    for fact in factors:
-        if canDivideIntoGroups(nums, fact):
-            answer.append(fact)
-    return answer
-
-
-ans = but_stops([1, 2, 1, 1, 1, 2, 1, 3])
-print(ans)
-
-
+    while l <= r:
+        mid = (l + r + 1) // 2
+        
+        if nums[mid] < nums[mid + 1]:
+            l = mid + 1
+        else:
+            r = mid - 1
     
-                
+    return l
+
+
+def binary_search_inc(nums, l, r, target):
+    while l <= r:
+        mid = (l + r) // 2
+        
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            l = mid + 1
+        else:
+            r = mid - 1
+    
+    return -1
+
+
+def binary_search_dec(nums, l, r, target):
+    while l <= r:
+        mid = (l + r) // 2
+        
+        if nums[mid] == target:
+            return mid
+        elif nums[mid] < target:
+            r = mid - 1  
+        else:
+            l = mid + 1
+    
+    return -1
+
+
+def solve(A, B):
+    peak = find_peak(A)
+
+    ansl = binary_search_inc(A, 0, peak, B)
+    if ansl != -1:
+        return ansl
+    ansr = binary_search_dec(A, peak + 1, len(A) - 1, B)
+    return ansr
+
